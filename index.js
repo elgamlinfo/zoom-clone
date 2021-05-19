@@ -8,13 +8,13 @@ const {ExpressPeerServer} = require('peer');
 
 const port = process.env.PORT || 5000;
 
-//const expressServer = server.listen(9000);
-const peerServer = ExpressPeerServer(server, {
-  debug: true,
-  path: "/" 
+const expressServer = app.listen(9000);
+const peerServer = ExpressPeerServer(expressServer,{
+   path:'/myapp'
 });
 
-app.use('/peerjs', peerServer);
+
+app.use(peerServer);
 
 
 app.set('view engine', 'ejs')
