@@ -1,12 +1,10 @@
 const socket = io('/')
 const videoGrid = document.querySelector('.contact_video_grid')
 const myPeer = new Peer(undefined, {
-  host: location.hostname,
-  debug: 1,
-  port: 9000,
-  path: '/myapp'
+  path: '/peerjs',
+  host: '/',
+  port: '443'
 })
-
 
 
 const myVideo = document.createElement('video')

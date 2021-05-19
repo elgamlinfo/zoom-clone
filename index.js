@@ -1,18 +1,18 @@
 require('dotenv').config();
 const express = require('express')
 const app = express()
-const server = require('http').createServer(app)
+const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
-const PORT = process.env.PORT||3000;
-const expressServer = app.listen(9000);
-const peerServer = ExpressPeerServer(expressServer,{
-   path:'/myapp'
+const PORT = process.env.PORT||443;
+//const expressServer = server.listen(9000);
+const peerServer = ExpressPeerServer(server, {
+  debug: true
 });
 
-app.use(peerServer);
+app.use('/peerjs', peerServer);
 
 
 app.set('view engine', 'ejs')
@@ -48,6 +48,4 @@ io.on('connection', socket => {
   })
 })
 
-server.listen(PORT, () => {
-  console.log('http://localhost:3000');
-})
+server.listen(process.env.PORT||3030)
