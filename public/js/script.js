@@ -1,11 +1,10 @@
-const socket = io('/')
+const socket = io(location.hostname)
 const videoGrid = document.querySelector('.contact_video_grid')
 const myPeer = new Peer(undefined, {
-  path: '/peerjs',
-  host: '/',
-  port: '443'
-})
-
+  host: location.hostname,
+  port: location.port || (location.protocol === "https:" ? 443 : 80),
+  path: "/peerjs",
+});
 
 const myVideo = document.createElement('video')
 myVideo.muted = true
