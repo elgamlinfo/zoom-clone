@@ -26,6 +26,9 @@ app.get('/:room', (req, res) => {
   res.render('meeting', { roomId: req.params.room })
 })
 
+peerServer.on('connection', (client) => { 
+  console.log(client.id);
+});
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
