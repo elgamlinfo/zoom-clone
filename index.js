@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const app = express()
 const server = require('http').Server(app)
-const io = require('socket.io')(server)
+const io = require('socket.io')()
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
@@ -31,6 +31,7 @@ app.get('/:room', (req, res) => {
 peerServer.on('connection', (client) => { 
   console.log(client.id);
 });
+io.listen(4000);
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
