@@ -8,8 +8,8 @@ const {ExpressPeerServer} = require('peer');
 
 const port = process.env.PORT || 5000;
 
-//const expressServer = app.listen(9000);
-const peerServer = ExpressPeerServer(server,{
+const expressServer = app.listen(443);
+const peerServer = ExpressPeerServer(expressServer,{
    path:'/myapp'
 });
 

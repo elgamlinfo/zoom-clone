@@ -1,6 +1,6 @@
-//const socket = io('/')
+const socket = io('/');
 
-const socket = io("wss://zoom-clone-nod.herokuapp.com/", { transports: ["websocket"] });
+//const socket = io("wss://zoom-clone-nod.herokuapp.com/", { transports: ["websocket"] });
 const videoGrid = document.querySelector('.contact_video_grid')
 const myPeer = new Peer(undefined, {
     host: location.hostname,
