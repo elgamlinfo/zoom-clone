@@ -24,28 +24,11 @@ startBtn.addEventListener('click', (e) => {
 
 /////start screen capture function/////
 async function startCapture() {
-    navigator.mediaDevices.getDisplayMedia({video:{cursor:"always"}, audio: true})
+    navigator.mediaDevices.getDisplayMedia({cursor:"always"})
     .then(stream => {
-      myVideoStream = stream;
       shareVideo.srcObject = stream;
-      myPeer.on('call', call => {
-        call.answer(stream)
-        call.on('stream', userVideoStream => {
-          shareVideo.srcObject = userVideoStream;
-        })
-      })
-      socket.emit('sharescreen', stream);
-      socket.on('user-connected', userId => {
-        const call = myPeer.call(userId, stream)
-        // call.on('stream', userVideoStream => {
-        //   shareVideo.srcObject = userVideoStream;
-        // })
-        // call.on('close', () => {
-        //   video.remove()
-        // })
-
-        peers[userId] = call
-      })
+      myVideoStream.getVideoTracks()[0] = stream.getVideoTracks()[0];
+      //socket.emit('sharescreen', stream);
     })
     .catch(error => {
       console.log({error});

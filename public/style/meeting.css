@@ -1247,7 +1247,25 @@ body {
      object-fit: cover;
   border-radius: 5px;
 }
+.video__item {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
 
+.video__name {
+  z-index: 2;
+  left: 0px;
+  bottom: 0px;
+  color: white;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.6);
+  text-transform: capitalize;
+}
 .grid_box .content .share_screen_prev {
   width: 100%;
   height: 100%;

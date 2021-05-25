@@ -1,21 +1,30 @@
 require('dotenv').config();
 const express = require('express')
 const app = express()
+const path = require('path');
+const fs = require('fs')
 const server = require('http').Server(app)
+/*const server = require('https').createServer(
+  {
+    key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem')),
+  },
+  app
+)*/
 const io = require('socket.io')(server);
+var cors = require('cors')
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
-const port = process.env.PORT || 5000;
+//const port = process.env.PORT || 5000;
 
-//const expressServer = app.listen(443);
-const peerServer = ExpressPeerServer(server,{
+//const expressServer = app.listen(9000);
+/*const peerServer = ExpressPeerServer(server,{
    path:'/myapp'
 });
-
-
-app.use(peerServer);
-
+*/
+app.use(cors())
+//app.use( peerServer);
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -52,5 +61,5 @@ io.on('connection', socket => {
 })
 
 server.listen(port, () => {
-   console.log(`app listen at port ${port}`);
+   console.log(`app listen at port https://localhost:${port}`);
 })
