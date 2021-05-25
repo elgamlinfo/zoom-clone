@@ -4,9 +4,9 @@ const socket = io("/");
 const videoGrid = document.querySelector('.contact_video_grid')
 const myPeer = new Peer(undefined, {
   secure: true,  
-  host: "zoom-clone-nod.herokuapp.com"
+  host: "zoom-clone-nod.herokuapp.com",
     //port: 5000,
-    //path: "/myapp",
+    path: "/peerjs",
 });
 
 const myVideo = document.createElement('video')
