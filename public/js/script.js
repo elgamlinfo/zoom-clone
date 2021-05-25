@@ -1,31 +1,34 @@
-const socket = io("/");
-
-//const socket = io("wss://zoom-clone-nod.herokuapp.com/", { transports: ["websocket"] });
-const videoGrid = document.querySelector('.contact_video_grid')
-const myPeer = new Peer(undefined, {
-  secure: true,  
-  host: "zoom-clone-nod.herokuapp.com",
-  port: 443,
-    //path: "/peerjs",
-});
-
-const myVideo = document.createElement('video')
-myVideo.muted = true
-const peers = {}
-let myVideoStream;
+const videoGrid = document.querySelector('.contact_video_grid');
+const audioMuteBtn = document.querySelector('.audio_mute_btn');
+const videoMuteBtn = document.querySelector('.video_mute_btn');
+const peers = {};
+const myVideo = document.createElement('video');
+myVideo.muted = true;
 const videoText = document.createElement("div");
 const videoItem = document.createElement("div");
 videoItem.classList.add("video__item");
 videoText.classList.add("video__name");
 videoItem.append(videoText);
+let myVideoStream;
 let userName = "mostafa elgaml";
 let userID=undefined;
+
+
+
+const socket = io('/');
+const myPeer = new Peer(undefined, {
+    host: "/",
+    port: location.port,
+    path: "/myapp",
+});
+
+
 
 myPeer.on('open', id => {
   socket.emit('join-room', ROOM_ID, id)
   userID = id;
-  console.log(id);
 })
+
 
 navigator.mediaDevices.getUserMedia({
   video: true,
@@ -47,6 +50,7 @@ navigator.mediaDevices.getUserMedia({
  
 })
 
+
 socket.on('user-disconnected', userId => {
   const video = document.getElementById(userId);
   if (video) {
@@ -56,10 +60,6 @@ socket.on('user-disconnected', userId => {
     peers[userId].close()
   }
 })
-
-
-
-
 
 
 
@@ -74,7 +74,6 @@ function connectToNewUser(userId, stream) {
   })
   peers[userId] = call
 }
-
 
 
 function addVideoStream(video, stream, userId, name=userName) {
@@ -98,14 +97,8 @@ function addVideoStream(video, stream, userId, name=userName) {
       node.remove();
     }
   });
-  //videoGrid.append(video);
-  //videoGrid.insertAdjacentElement('beforeend', video);
 }   
 
-
-
-const audioMuteBtn = document.querySelector('.audio_mute_btn');
-const videoMuteBtn = document.querySelector('.video_mute_btn');
 
 
 
@@ -113,11 +106,9 @@ audioMuteBtn.addEventListener('click', e => {
   muteUnmuteAudio(e);
 })
 
-
 videoMuteBtn.addEventListener('click', e => {
   muteUnmuteVideo(e);
 })
-
 
 const muteUnmuteAudio = (e) => {
   const enabled = myVideoStream.getAudioTracks()[0].enabled;
