@@ -18,7 +18,7 @@ let userID=undefined;
 const socket = io('/');
 const myPeer = new Peer(undefined, {
     host: "/",
-    port: location.port,
+    port: 443,//location.port,
     path: "/myapp",
 });
 
