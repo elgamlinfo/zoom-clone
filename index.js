@@ -16,7 +16,7 @@ var cors = require('cors')
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
-//const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 //const expressServer = app.listen(9000);
 /*const peerServer = ExpressPeerServer(server,{
