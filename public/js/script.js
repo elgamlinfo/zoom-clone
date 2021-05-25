@@ -6,7 +6,7 @@ const myPeer = new Peer(undefined, {
   secure: true,  
   host: "zoom-clone-nod.herokuapp.com",
     //port: 5000,
-    path: "/peerjs",
+    //path: "/peerjs",
 });
 
 const myVideo = document.createElement('video')
