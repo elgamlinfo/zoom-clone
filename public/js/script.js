@@ -18,16 +18,10 @@ let userID=undefined;
 const socket = io('/');
 const myPeer = new Peer(undefined, {
     host: "/",
-    port: 443,//location.port,
+    port: 3030,
     path: "/myapp",
 });
 
-
-
-myPeer.on('open', id => {
-  socket.emit('join-room', ROOM_ID, id)
-  userID = id;
-})
 
 
 navigator.mediaDevices.getUserMedia({
@@ -41,6 +35,7 @@ navigator.mediaDevices.getUserMedia({
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
       addVideoStream(video, userVideoStream, call.peer, userName)
+      console.log(call);
     })
   })
 
@@ -48,6 +43,12 @@ navigator.mediaDevices.getUserMedia({
     connectToNewUser(userId, stream)
   })
  
+})
+
+
+myPeer.on('open', id => {
+  socket.emit('join-room', ROOM_ID, id)
+  userID = id;
 })
 
 
@@ -140,5 +141,4 @@ const muteUnmuteVideo = (e) => {
     e.target.classList.toggle('fa-video-slash');
   }
 }
-
-
+   
