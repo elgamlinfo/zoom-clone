@@ -20,7 +20,7 @@ let current;
 let domain = (new URL(window.location));
 
 const socket = io("/");
-const myPeer = new Peer(peer_id, {
+const myPeer = new Peer(undefined, {
   host: 'zoom-clone-nod.herokuapp.com',
   path: '/',
   port: 443,
