@@ -17,12 +17,20 @@ let userName = "mostafa elgaml";
 let userID = undefined;
 let share = false;
 let current;
+let domain = (new URL(window.location));
+
 const socket = io("/");
-const myPeer = new Peer(undefined, {
-  host: "/",
-  port: 3000,
-  path: "/myapp",
-});
+const myPeer = new Peer(peer_id, {
+  host: 'zoom-clone-nod.herokuapp.com',
+  path: '/',
+  port: 443,
+  secure: true
+})
+// const myPeer = new Peer(undefined, {
+//   host: domain.hostname,
+//   port: 3000,
+//   path: "/myapp",
+// });   
 
 myPeer.on("open", (id) => {
   socket.emit("join-room", ROOM_ID, id);
@@ -41,7 +49,7 @@ navigator.mediaDevices
     myVideoStream = stream;
     addVideoStream(myVideo, stream, userID, userName);
     myPeer.on("call", (call) => {
-      current = call.peerConnection;
+      peers[call.peer] = call
       call.answer(stream);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
@@ -49,7 +57,6 @@ navigator.mediaDevices
         //console.log(call);
       });
     });
-
     socket.on("user-connected", (userId) => {
       connectToNewUser(userId, stream);   
     });
