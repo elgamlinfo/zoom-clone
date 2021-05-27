@@ -16,7 +16,7 @@ var cors = require('cors')
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
-const port = process.env.PORT || 3030;
+const port = process.env.PORT || 3000;
 
 //const expressServer = app.listen(9000);
 const peerServer = ExpressPeerServer(server,{
@@ -41,7 +41,7 @@ app.set("views", viewPath);
 app.set("view engine", "ejs");
 
 app.get('/', (req, res) => {
-  res.redirect(`/${uuidV4()}`)
+  res.redirect(`/${Date.now() + ( (Math.random()*100000).toFixed())}`)
 })
 
 app.get('/:room', (req, res) => {
