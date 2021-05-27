@@ -20,17 +20,17 @@ let current;
 let domain = (new URL(window.location));
 
 const socket = io("/");
-const myPeer = new Peer(undefined, {
-  host: 'zoom-clone-nod.herokuapp.com',
-  path: '/',
-  port: 443,
-  secure: true
-})
 // const myPeer = new Peer(undefined, {
-//   host: domain.hostname,
-//   port: 3000,
-//   path: "/myapp",
-// });   
+//   host: 'zoom-clone-nod.herokuapp.com',
+//   path: '/',
+//   port: 443,
+//   secure: true
+// })
+const myPeer = new Peer(undefined, {
+  host: domain.hostname,
+  port: 9000,
+  path: "/myapp",
+});   
 
 myPeer.on("open", (id) => {
   socket.emit("join-room", ROOM_ID, id);
@@ -81,6 +81,7 @@ function connectToNewUser(userId, stream) {
     addVideoStream(video, userVideoStream, userId, userName);
   });
   call.on("close", () => {
+  console.log(peers);
     video.remove();
   });
   peers[userId] = call;
@@ -93,6 +94,7 @@ function connectToNewUser(userId, stream) {
         console.log(myPeer);
     }
   }   
+  console.log(peers);
 }
 
 function addVideoStream(video, stream, userId, name = userName) {
