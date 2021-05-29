@@ -2,8 +2,10 @@ const videoGrid = document.querySelector(".contact_video_grid");
 const audioMuteBtn = document.querySelector(".audio_mute_btn");
 const videoMuteBtn = document.querySelector(".video_mute_btn");
 const shareVideo = document.querySelector("#share_video");
-const  shareScreenRev = document.querySelector('#share_screen_prev');
-const contactVideoGrid = document.querySelector('#contact_video_grid');
+const shareScreenRev = document.querySelector("#share_screen_prev");
+const contactVideoGrid = document.querySelector("#contact_video_grid");
+const  fullSreenBtn =  document.getElementById('full_screen');
+const  openPintBtn =  document.getElementById('open_pint');
 const peers = {};
 const myVideo = document.createElement("video");
 myVideo.muted = true;
@@ -14,23 +16,17 @@ videoText.classList.add("video__name");
 videoItem.append(videoText);
 let myVideoStream;
 let userName = "mostafa elgaml";
-let userID = undefined;
+let userID;
 let share = false;
 let current;
-let domain = (new URL(window.location));
+let domain = new URL(window.location);
 
 const socket = io("/");
-// const myPeer = new Peer(undefined, {
-//   host: 'zoom-clone-nod.herokuapp.com',
-//   path: '/',
-//   port: 443,
-//   secure: true
-// })
 const myPeer = new Peer(undefined, {
   host: domain.hostname,
-  port: 9000,
+  port: 3001,
   path: "/myapp",
-});   
+});
 
 myPeer.on("open", (id) => {
   socket.emit("join-room", ROOM_ID, id);
@@ -40,29 +36,33 @@ myPeer.on("open", (id) => {
 navigator.mediaDevices
   .getUserMedia({
     video: true,
-    audio: true,
+    echoCancellation: true,
+    noiseSuppression: true,
+    audio: {
+      echoCancellation: true,
+      noiseSuppression: true,
+    },
   })
   .then((stream) => {
-    document.querySelector("#start_share_screen").addEventListener('click', () => {
-      screenSharing()
-    })
+    document
+      .querySelector("#start_share_screen")
+      .addEventListener("click", () => {
+        screenSharing();
+      });
     myVideoStream = stream;
     addVideoStream(myVideo, stream, userID, userName);
     myPeer.on("call", (call) => {
-      peers[call.peer] = call
+      peers[call.peer] = call;
       call.answer(stream);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
         addVideoStream(video, userVideoStream, call.peer, userName);
-        //console.log(call);
       });
     });
     socket.on("user-connected", (userId) => {
-      connectToNewUser(userId, stream);   
+      connectToNewUser(userId, stream);
     });
   });
-
-
 
 socket.on("user-disconnected", (userId) => {
   const video = document.getElementById(userId);
@@ -71,6 +71,7 @@ socket.on("user-disconnected", (userId) => {
   }
   if (peers[userId]) {
     peers[userId].close();
+    delete peers[userId]
   }
 });
 
@@ -79,22 +80,23 @@ function connectToNewUser(userId, stream) {
   const video = document.createElement("video");
   call.on("stream", (userVideoStream) => {
     addVideoStream(video, userVideoStream, userId, userName);
+    if (share) {
+      for (let [key, value] of myPeer._connections.entries()) {
+        if(myPeer._connections.get(key)[0].peerConnection !== null){
+          myPeer._connections
+          .get(key)[0]
+          .peerConnection.getSenders()[1]
+          .replaceTrack(shareStream.getTracks()[0]);
+          console.log(myPeer);
+        }
+      }
+      socket.emit('sharescreen', userID);
+    }
   });
   call.on("close", () => {
-  console.log(peers);
     video.remove();
   });
   peers[userId] = call;
-  if(share) {
-    for (let [key, value] of myPeer._connections.entries()) {
-      myPeer._connections
-        .get(key)[0]
-        .peerConnection.getSenders()[1]
-        .replaceTrack(shareStream.getTracks()[0]);
-        console.log(myPeer);
-    }
-  }   
-  console.log(peers);
 }
 
 function addVideoStream(video, stream, userId, name = userName) {
@@ -159,14 +161,28 @@ const muteUnmuteVideo = (e) => {
   }
 };
 
-
 var shareStream;
 async function screenSharing() {
   await navigator.mediaDevices.getDisplayMedia().then((stream) => {
     shareStream = stream;
     share = true;
+    const myVid = document.getElementById(userID);
+    myVid.srcObject = stream;
+    fullSreenBtn.style.display = "block";
+    openPintBtn.style.display = "block";
+    myVid.style.objectFit = "contain";
+    fullSreenBtn.addEventListener('click', (e) => {
+      if (myVid.requestFullscreen) {
+        myVid.requestFullscreen();
+      } else if (myVid.webkitRequestFullscreen) { /* Safari */
+        myVid.webkitRequestFullscreen();
+      } else if (myVid.msRequestFullscreen) { /* IE11 */
+        myVid.msRequestFullscreen();
+      }
+    })
+
     for (let [key, value] of myPeer._connections.entries()) {
-      myPeer._connections
+        myPeer._connections
         .get(key)[0]
         .peerConnection.getSenders()[1]
         .replaceTrack(shareStream.getTracks()[0]);
@@ -175,17 +191,45 @@ async function screenSharing() {
 
     shareStream.getTracks()[0].onended = () => {
       for (let key of myPeer._connections.keys()) {
-          myPeer._connections.get(key)[0].peerConnection.getSenders()[1].replaceTrack(myVideoStream.getVideoTracks()[0])
+        myPeer._connections
+          .get(key)[0]
+          .peerConnection.getSenders()[1]
+          .replaceTrack(myVideoStream.getVideoTracks()[0]);
       }
       share = false;
-    }
+      socket.emit("closeShare", userID);
+      myVid.srcObject = myVideoStream;
+      fullSreenBtn.style.display = "none";
+      openPintBtn.style.display = "none";
+      myVid.style.objectFit = "cover";
+    };
   });
-  //socket.emit('sharescreen');
+  
+  socket.emit('sharescreen', userID);
   socket.on("user-connected", (userId) => {
     console.log(userId);
   });
 }
-// socket.on('share', stream => {
-//   contactVideoGrid.style.display = 'none';
-//   shareScreenRev.style.display = 'block';
-// })
+
+
+ socket.on('share', userId => {
+  const vid = document.getElementById(userId);
+  fullSreenBtn.style.display = "block";
+  vid.style.objectFit = "contain";
+  fullSreenBtn.addEventListener('click', (e) => {
+    if (vid.requestFullscreen) {
+      vid.requestFullscreen();
+    } else if (vid.webkitRequestFullscreen) { /* Safari */
+      vid.webkitRequestFullscreen();
+    } else if (vid.msRequestFullscreen) { /* IE11 */
+      vid.msRequestFullscreen();
+    }
+  })
+})  
+
+
+socket.on("shareClose", userId => {
+  const vid = document.getElementById(userId);
+  vid.style.objectFit = "cover";
+  fullSreenBtn.style.display = "none";
+})

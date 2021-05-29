@@ -16,7 +16,7 @@ var cors = require('cors')
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 3001;
 
 //const expressServer = app.listen(9000);
 const peerServer = ExpressPeerServer(server,{
@@ -56,9 +56,13 @@ io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
     socket.to(roomId).emit('user-connected', userId)
-    socket.on('sharescreen', (stream) => {
-      console.log('stream');
-      socket.to(roomId).emit('share')
+
+    socket.on('sharescreen', (userID) => {
+      socket.to(roomId).emit('share', userID);
+    })
+
+    socket.on("closeShare", userID => {
+      socket.to(roomId).emit('shareClose', userID);
     })
 
     socket.on('message', (userData) => {

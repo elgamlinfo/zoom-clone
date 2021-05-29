@@ -11,6 +11,7 @@ sendMess.addEventListener('click', e => {
         }
         socket.emit('message', userData);
         messInput.value = "";
+
     }
 })
 
@@ -31,6 +32,11 @@ socket.on('sendMess', (userData) => {
                     <p class="message_content">${userData.mess}</p>
                 </div>
                 `;
-    messContainer.insertAdjacentHTML('beforeend', html)
+    messContainer.insertAdjacentHTML('afterbegin', html)
   
 })  
+
+
+
+  
+  

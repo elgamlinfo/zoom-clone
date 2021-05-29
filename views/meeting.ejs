@@ -91,7 +91,8 @@
                 <button class="option audio_mute_btn"><i class="fad fa-microphone"></i></button>
                 <button class="option video_mute_btn"><i class="fad fa-video"></i></button>
                 <button class="option" id="start_share_screen"><i class="fad fa-share-square"></i></button>
-                <button class="option" id="full_screen"><i class="fad fa-compress"></i></button>
+                <button class="option" id="open_pint"><i class="fad fa-chalkboard"></i></button>
+                <button class="option full_screen" id="full_screen"><i class="fad fa-compress"></i></button>
                 <button class="option"><i class="fad fa-sign-out"></i></button>
             </div>
             <!--------------- end meeting options ----------------->
@@ -250,6 +251,50 @@
         </div>
     </div> -->
     <!------------ END alerts  ----------------->
+  
+  
+  
+    <!------------ start whiteboard  ----------------->
+    <div class="whiteboard">
+        <div id="toolBar" class="toolbar">
+            <div id="radiusTool" class="radius__tool">
+              <span>RADIUS</span>
+              <input type="range" name="radiusPoint" id="radiusPoint" class="radius__point" min="1" max="20" step="1" value="1">
+              <span id="radTextRaduis">20</span>
+            </div>
+            <div id="radiusTool" class="radius__tool">
+              <span>BLUR</span>
+              <input type="range" name="radiusBlur" id="radiusBlur" class="radius__point" min="0" max="20" step="1" value="0">
+              <span id="radTextBlur">0</span>
+            </div>
+            <div id="selectColors" class="select__colors">
+              <input type="radio" name="radioColors" id="red" value="#FF0000">
+              <label for="red" class="radio__colors"></label>
+              <input type="radio" name="radioColors" id="blue" value="#2E8B57">
+              <label for="blue" class="radio__colors"></label>
+              <input type="radio" name="radioColors" id="green" value="#1E90FF">
+              <label for="green" class="radio__colors"></label>
+              <input type="radio" name="radioColors" id="yellow" value="#FFFF00">
+              <label for="yellow" class="radio__colors"></label>
+              <input type="radio" name="radioColors" id="pink" value="#FF69B4">
+              <label for="pink" class="radio__colors"></label>
+              <input type="radio" name="radioColors" id="gray" value="#A9A9A9">
+              <label for="gray" class="radio__colors"></label>
+              <input type="radio" name="radioColors" id="black" checked value="#111111">
+              <label for="black" class="radio__colors"></label>
+            </div>
+            <div class="buttons__canvas">
+              <button  id="clearCanvas" class="btn__clear"><i class="fad fa-trash-alt"></i></button>
+              <button  id="closeCanvas" class="btn__close"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <canvas id="canvas">
+            Sorry, your browser is rubbish.
+          </canvas>
+      </div>
+    <!------------ END whiteboard  ----------------->
+
+
     
     <!--------------------- start scripts  --------------->
     <script src="./plugins/jquery.js" defer></script>
@@ -259,6 +304,7 @@
     <script src="./js/loadingpage.js" defer></script>
     <script src="./js/alert.js" defer></script>
     <script src="./js/scrollCustom.js" defer></script>
+    <script src="./js/whiteboard.js" defer></script>
     <!--------------------- end scripts  ------------------>
 </body>
 

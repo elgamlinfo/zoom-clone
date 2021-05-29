@@ -1255,7 +1255,7 @@ body {
 }
 
 .video__name {
-  z-index: 2;
+  z-index: 0;
   left: 0px;
   bottom: 0px;
   color: white;
@@ -1326,6 +1326,14 @@ body {
   cursor: pointer;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+}
+
+
+.grid_box .content .meet_options .full_screen{
+  display: none;
+}
+.grid_box .content .meet_options #open_pint{
+  display: none;
 }
 
 .grid_box .content .meet_options .option i {
@@ -1565,3 +1573,209 @@ body {
     right: 20px;
   }
 }
+
+
+/***********start whiteboard************/
+.whiteboard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: #fff;
+  display: none;
+}
+
+canvas {
+  display: block;
+
+  cursor: default;
+}
+.toolbar {
+  position: fixed;
+  top: 0;
+
+  display: flex;
+
+  width: 100%;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+
+  color: #eee;
+  background: #222;
+  box-shadow: 0 0 2px 2px rgba(47, 47, 47, 0.5);
+
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  transition: top 0.5s;
+}
+@media screen and (min-width: 320px) {
+  .toolbar {
+    justify-content: space-around;
+  }
+}
+@media screen and (min-width: 768px) {
+  .toolbar {
+    padding-bottom: 0;
+
+    justify-content: space-between;
+  }
+}
+.radius__tool {
+  line-height: 50px;
+
+  display: flex;
+
+  align-items: center;
+}
+.radius__point {
+  width: 150px;
+  cursor: pointer;
+}
+.radius__point:focus {
+  outline: none;
+}
+.radius__point::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -9px;
+
+  border: 3px solid #222;
+  border-radius: 50%;
+  background-color: #eee;
+}
+.radius__point::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+
+  border: 3px solid #222;
+  border-radius: 50%;
+  background-color: #eee;
+}
+.radius__point::-ms-thumb {
+  width: 20px;
+  height: 20px;
+
+  border: 3px solid #222;
+  border-radius: 50%;
+  background-color: #eee;
+}
+.radius__point::-webkit-slider-runnable-track {
+  height: 3px;
+
+  background-color: #eee;
+}
+.radius__point:focus::-webkit-slider-runnable-track {
+  outline: none;
+}
+.radius__point::-moz-range-track {
+  height: 3px;
+
+  background-color: #777;
+}
+.radius__point::-ms-track {
+  height: 3px;
+
+  background-color: #777;
+}
+.radius__point::-ms-fill-lower {
+  background-color: HotPink;
+}
+.radius__point::-ms-fill-upper {
+  background-color: black;
+}
+.radius__point,
+.radius__point::-webkit-slider-runnable-track,
+.radius__point::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+input[type="radio"] {
+  display: none;
+}
+input[type="radio"]:checked + .radio__colors:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: inline-block;
+
+  width: 8px;
+  height: 8px;
+
+  content: "";
+  transform: translate(-50%, -50%);
+
+  border: 1px solid #eee;
+  border-radius: 50%;
+  background-color: #222;
+}
+.radio__colors {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background-color: #111;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 2px 2px rgba(0, 0, 0, 0.5) inset;
+  cursor: pointer;
+}
+.radio__colors:nth-child(2) {
+  background: #f00;
+}
+.radio__colors:nth-child(4) {
+  background: #2e8b57;
+}
+.radio__colors:nth-child(6) {
+  background: #1e90ff;
+}
+.radio__colors:nth-child(8) {
+  background: #ff0;
+}
+.radio__colors:nth-child(10) {
+  background: #ff69b4;
+}
+.radio__colors:nth-child(12) {
+  background: #a9a9a9;
+}
+.radio__colors:nth-child(14) {
+  background: #111;
+}
+@media screen and (max-width: 480px) {
+  .buttons__canvas {
+    margin-top: 5px;
+  }
+}
+.buttons__canvas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70px;
+}
+.btn__close {
+  font-size: 20px;
+  color: white;
+  background:#ec2b2b;
+}
+.btn__clear {
+  font-size: 16px;
+  color: #ec2b2b;
+  background:white;
+}
+.btn__clear,
+.btn__close {
+  outline: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/***********end whiteboard************/

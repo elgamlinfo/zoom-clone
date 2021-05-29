@@ -40,15 +40,15 @@ socket.on('share', stream => {
   shareScreenRev.style.display = 'block';
 })
 /********************************* start full screen video btn************************************/
-var fullSreenBtn =  document.getElementById('full_screen');
+// var fullSreenBtn =  document.getElementById('full_screen');
 
-fullSreenBtn.addEventListener('click', (e) => {
-  if (shareVideo.requestFullscreen) {
-    shareVideo.requestFullscreen();
-  } else if (shareVideo.webkitRequestFullscreen) { /* Safari */
-    shareVideo.webkitRequestFullscreen();
-  } else if (shareVideo.msRequestFullscreen) { /* IE11 */
-    shareVideo.msRequestFullscreen();
-  }
-})
+// fullSreenBtn.addEventListener('click', (e) => {
+//   if (shareVideo.requestFullscreen) {
+//     shareVideo.requestFullscreen();
+//   } else if (shareVideo.webkitRequestFullscreen) { /* Safari */
+//     shareVideo.webkitRequestFullscreen();
+//   } else if (shareVideo.msRequestFullscreen) { /* IE11 */
+//     shareVideo.msRequestFullscreen();
+//   }
+// })
 /*********************************end full screen video btn************************************/
