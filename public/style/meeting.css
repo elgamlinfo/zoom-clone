@@ -1328,9 +1328,14 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-
+.grid_box .content .meet_options a {
+  text-decoration: none;
+  background-color: rgba(245, 31, 31, 0.86);
+  color: #fff;
+}
 .grid_box .content .meet_options .full_screen{
   display: none;
+  background-color: rgba(188, 188, 188, 0.6);
 }
 .grid_box .content .meet_options #open_pint{
   display: none;
@@ -1350,10 +1355,10 @@ body {
           align-items: center;
 }
 
-.grid_box .content .meet_options .option:last-of-type {
+/* .grid_box .content .meet_options .option:last-of-type {
   background-color: rgba(245, 31, 31, 0.86);
   color: #fff;
-}
+} */
 
 .grid_box .content .meet_options .option.active {
   background-color: rgba(245, 31, 31, 0.86);

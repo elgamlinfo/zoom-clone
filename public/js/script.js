@@ -16,15 +16,14 @@ videoText.classList.add("video__name");
 videoItem.append(videoText);
 let myVideoStream;
 let userName = "mostafa elgaml";
-let userID;
+let userID ;
 let share = false;
 let current;
-let domain = new URL(window.location);
 
 const socket = io("/");
 const myPeer = new Peer(undefined, {
-  host: domain.hostname,
-  port: 3001,
+  host:'/',
+  port: 9000,
   path: "/myapp",
 });
 

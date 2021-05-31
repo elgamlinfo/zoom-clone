@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const fs = require('fs')
+const axios = require('axios');
 //const server = require('http').Server(app)
 const server = require('https').createServer(
   {
@@ -16,7 +17,7 @@ var cors = require('cors')
 const { v4: uuidV4 } = require('uuid')
 const {ExpressPeerServer} = require('peer');
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 9000;
 
 //const expressServer = app.listen(9000);
 const peerServer = ExpressPeerServer(server,{
@@ -40,13 +41,25 @@ app.use(express.static(publicPath));
 app.set("views", viewPath);
 app.set("view engine", "ejs");
 
+// app.get('/', (req, res) => {
+//   res.redirect(`/${Date.now() + ( (Math.random()*100000).toFixed())}/8368368`)
+// })
+
+let userID;
+
 app.get('/', (req, res) => {
-  res.redirect(`/${Date.now() + ( (Math.random()*100000).toFixed())}`)
+  userID = req.query.userid;
+  res.render('meeting', { 
+    roomId: req.query.roomid,
+    userId: req.query.userid,
+   })
+
 })
 
-app.get('/:room', (req, res) => {
-  res.render('meeting', { roomId: req.params.room })
-})
+//404 page handler
+app.use((req, res, next) => {
+    res.render('404');
+});
 
 peerServer.on('connection', (client) => { 
   console.log(client.id);
@@ -71,7 +84,8 @@ io.on('connection', socket => {
 
     socket.on('disconnect', () => {
       socket.to(roomId).emit('user-disconnected', userId)
-      console.log(userId);
+      console.log(`USER ${userId} Disconnected`);
+      axios.get(`http://localhost:8000/close/${userID}`);
     })
   })
 })
