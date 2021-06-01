@@ -7,7 +7,7 @@ sendMess.addEventListener('click', e => {
     if(messInput.value.length !== 0) {
         const userData = {
             mess: messInput.value,
-            name: "mostafa"
+            name: userName
         }
         socket.emit('message', userData);
         messInput.value = "";

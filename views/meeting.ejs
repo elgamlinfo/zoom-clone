@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="./style/meeting.css">
     <script>
         const ROOM_ID = "<%= roomId %>"
+        const USER_ID = "<%= userId %>"
     </script>
-    <!-- <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script> -->
     <script src="./plugins/peerjs.min.js" defer></script>
     <script src="/socket.io/socket.io.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/script.js" defer></script>
-    <!-- <script src="./js/share-screen-handel.js" defer></script> -->
     <script src="./js/messages.js" defer></script>
 </head>
 
@@ -28,28 +28,8 @@
             <!-- start meeting information -->
             <div class="metting_info_container">
                 <button class="metting_info_btn"><i class="fad fa-exclamation-circle"></i></button>
-                <div class="metting_info">
-                    <div class="row meeting_host">
-                        <h3 class="col-12 m-0 p-0 pb-3  text-uppercase fw-bold">mostafa elgaml's room</h3>
-                    </div>
-                    <div class="item row pt-2 justify-content-between">
-                        <p class="col-3 p-0 fs-md-5  text-capitalize room_id_title">id :</p>
-                        <p class="col-9 p-0 fs-md-5 m-0 room_id">800 120 334</p>
-                    </div>
-                    <div class="item row pt-2 justify-content-between">
-                        <p class="col-3 p-0 fs-md-5  text-capitalize room_host_title">host :</p>
-                        <p class="col-9 p-0 fs-md-5  m-0 room_host text-uppercase">mostafa elgaml</p>
-                    </div>
-                    <div class="item row pt-2 justify-content-between">
-                        <p class="col-4 p-0  fs-md-5   text-capitalize room_passcode_title">passCode :</p>
-                        <p class="col-8 p-0 fs-md-5  m-0 room_passcode">205574</p>
-                    </div>
-                    <div class="item row pt-2 justify-content-between">
-                        <p class="col-3 p-0 fs-md-5 text-capitalize room_invite_title">invite :</p>
-                        <p class="col-9 p-0 fs-md-5 m-0 room_invite">
-                            https://us04web.zoom.us/j/7922818925?pwd=VWpoZTJOOWUrVjNWQmZUcDgrV3ltUT09</p>
-                    </div>
-                </div>
+                <div class="metting_info"></div>
+              
             </div>
             <!-- end meeting information -->
 
@@ -90,10 +70,12 @@
             <div class="meet_options">
                 <button class="option audio_mute_btn"><i class="fad fa-microphone"></i></button>
                 <button class="option video_mute_btn"><i class="fad fa-video"></i></button>
-                <button class="option" id="start_share_screen"><i class="fad fa-share-square"></i></button>
+                <%if(roomId == userId){%>
+                    <button class="option" id="start_share_screen"><i class="fad fa-share-square"></i></button>
+                <%}%>
                 <button class="option" id="open_pint"><i class="fad fa-chalkboard"></i></button>
                 <button class="option full_screen" id="full_screen"><i class="fad fa-compress"></i></button>
-                <a href="http://localhost:8000/leave/<%=userId %>" class="option"><i class="fad fa-sign-out"></i></a>
+                <a href="http://localhost:8000/leave/<%=userId %>" class="option option_exit"><i class="fad fa-sign-out"></i></a>
             </div>
             <!--------------- end meeting options ----------------->
         </div>
@@ -103,82 +85,18 @@
         <!----------------- start aside ----------------->
         <aside class="meet_aside">
             <div class="users">
-                <h3 class="fs-5"><span><i class="fad fa-users"></i></span>users</h3>
+                <h3 class="fs-5"><span><i class="fad fa-users"></i></span>participants</h3>
                 <!-- start users container -->
                 <div class="users_container">
                     <!-- start users item (card) -->
-                    <div class="user_item">
+                    <!--<div class="user_item">
                         <img src="" alt="">
                         <p class="user_name">mostafa elgaml</p>
                         <div class="options">
                             <span><i class="fad fa-microphone"></i></span>
                             <span><i class="fad fa-video"></i></span>
                         </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
-                    <div class="user_item">
-                        <img src="" alt="">
-                        <p class="user_name">mostafa elgaml</p>
-                        <div class="options">
-                            <span><i class="fad fa-microphone"></i></span>
-                            <span><i class="fad fa-video"></i></span>
-                        </div>
-                    </div>
+                    </div>-->
                     <!-- end users item (card) -->
                 </div>
                 <!-- end users container -->
