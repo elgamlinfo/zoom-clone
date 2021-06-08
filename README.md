@@ -2,8 +2,8 @@
 
 #instlation
 ```
-git clone your link here
-cd project name
+git clone https://github.com/elgamlinfo/zoom-clone.git
+cd zoom-clone
 npm install
 npm start 
 ```
