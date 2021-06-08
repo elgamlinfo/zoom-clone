@@ -19,7 +19,7 @@ document.querySelector('html').addEventListener('keydown',  (e) => {
     if (e.which == 13 &&  messInput.value.length !== 0) {
         const userData = {
             mess: messInput.value,
-            name: "mostafa"
+            name: userName
         }
         socket.emit('message', userData);
         messInput.value = "";

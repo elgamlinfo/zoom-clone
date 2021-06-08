@@ -17,6 +17,7 @@
     <script src="./plugins/peerjs.min.js" defer></script>
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./plugins/xlsx.full.min.js"></script>
     <script src="./js/script.js" defer></script>
     <script src="./js/messages.js" defer></script>
 </head>
@@ -34,7 +35,7 @@
             <!-- end meeting information -->
 
             <!-- start meeting host -->
-            <p class="room_name">elgaml's room</p>
+            <p class="room_name"></p>
             <!-- end meeting host -->
 
 
@@ -74,6 +75,8 @@
                     <button class="option" id="start_share_screen"><i class="fad fa-share-square"></i></button>
                 <%}%>
                 <button class="option" id="open_pint"><i class="fad fa-chalkboard"></i></button>
+                <button class="option" id="record"><i class="fas fa-compact-disc"></i></button>
+                <button class="option" id="down_record"><i class="fad fa-download"></i></button>
                 <button class="option full_screen" id="full_screen"><i class="fad fa-compress"></i></button>
                 <a href="http://localhost:8000/leave/<%=userId %>" class="option option_exit"><i class="fad fa-sign-out"></i></a>
             </div>
@@ -85,7 +88,13 @@
         <!----------------- start aside ----------------->
         <aside class="meet_aside">
             <div class="users">
-                <h3 class="fs-5"><span><i class="fad fa-users"></i></span>participants</h3>
+                <h3 class="fs-5">
+                    <span><i class="fad fa-users"></i></span>
+                    participants
+                    <%if(roomId == userId){%>
+                        <button class="exel"><i class="fad fa-file-spreadsheet"></i></button>
+                    <%}%>
+                </h3>
                 <!-- start users container -->
                 <div class="users_container">
                     <!-- start users item (card) -->
@@ -218,11 +227,11 @@
     <script src="./plugins/jquery.js" defer></script>
     <script src="./plugins/jquery.nicescroll.min.js" defer></script>
     <script src="./plugins/bootstrap.min.js"></script>
-    <script src="./js/meeting.js" defer></script>
     <script src="./js/loadingpage.js" defer></script>
     <script src="./js/alert.js" defer></script>
     <script src="./js/scrollCustom.js" defer></script>
     <script src="./js/whiteboard.js" defer></script>
+    <script src="./js/meeting.js" defer></script>
     <!--------------------- end scripts  ------------------>
 </body>
 

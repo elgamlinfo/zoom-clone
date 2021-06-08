@@ -18,11 +18,13 @@ var gridHightConfigration = function gridHightConfigration() {
   messagesContainer.style.height = (windowHeight - meetHead.offsetHeight) / 2 - 32 - 55 + "px";
 };
 
-gridHightConfigration();
+
 
 window.onresize = function (e) {
-  return gridHightConfigration();
+  document.querySelector('.message_input').style.bottom = "0px";
+  gridHightConfigration();
 };
+gridHightConfigration();
 /*************************  end grid height configration ******************************/
 
 /*********************metting header information****************/

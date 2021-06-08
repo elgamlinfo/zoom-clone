@@ -1340,6 +1340,12 @@ body {
 .grid_box .content .meet_options #open_pint{
   display: none;
 }
+.grid_box .content .meet_options #record{
+  display: none;
+}
+.grid_box .content .meet_options #down_record{
+  display: none;
+}
 
 .grid_box .content .meet_options .option i {
   width: 45px;
@@ -1384,13 +1390,23 @@ body {
   text-transform: capitalize;
   color: #a8a8a8;
   margin: 0px !important;
+  position: relative;
 }
 
 .grid_box .meet_aside .users h3 span {
   color: #fff;
   padding: 5px;
 }
-
+.grid_box .meet_aside .users .exel {
+  position: absolute;
+  top: 4px;
+  right: 13px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
 .grid_box .meet_aside .users .users_container {
   overflow-y: scroll;
 }
@@ -1498,7 +1514,7 @@ body {
 
 .grid_box .meet_aside .messages .message_input {
   position: absolute;
-  bottom: 0;
+  bottom: 26px;
   left: 0;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.1);

@@ -7,6 +7,8 @@ const shareScreenRev = document.querySelector("#share_screen_prev");
 const contactVideoGrid = document.querySelector("#contact_video_grid");
 const fullSreenBtn = document.getElementById("full_screen");
 const openPintBtn = document.getElementById("open_pint");
+const record = document.getElementById("record");
+const downRecord = document.getElementById("down_record");
 const usersContainer = document.querySelector(".users_container");
 const peers = {};
 const myVideo = document.createElement("video");
@@ -22,7 +24,11 @@ let usersData;
 let userID;
 let dbuserID;
 let share = false;
-let current;
+let isRecord = false;
+let participants;
+let mediaRecorder;
+let parts = [];
+
 const socket = io("/");
 const myPeer = new Peer(undefined, {
   host: "/",
@@ -221,6 +227,7 @@ socket.on('user-kick', id => {
 
 //host information handler
 socket.on("host-data", HostData => {
+  document.querySelector('.room_name').innerHTML = HostData.first_name +" "+HostData.last_name+"'s room";
   let html = ` 
                     <div class="row meeting_host">
                         <h3 class="col-12 m-0 p-0 pb-3  text-uppercase fw-bold">${HostData.first_name} ${HostData.last_name}'s room</h3>
@@ -318,6 +325,7 @@ async function screenSharing() {
     myVid.srcObject = stream;
     fullSreenBtn.style.display = "block";
     openPintBtn.style.display = "block";
+    record.style.display = "block";
     myVid.style.objectFit = "contain";
     fullSreenBtn.addEventListener("click", (e) => {
       if (myVid.requestFullscreen) {
@@ -331,7 +339,7 @@ async function screenSharing() {
       }
     });
 
-    if (Object.keys(peers).length !== 0) {
+    //if (Object.keys(peers).length !== 0) {
       for (let [key, value] of myPeer._connections.entries()) {
         myPeer._connections
           .get(key)[0]
@@ -339,7 +347,24 @@ async function screenSharing() {
           .replaceTrack(shareStream.getTracks()[0]);
         console.log(myPeer);
       }
-    }
+    //}
+
+      record.addEventListener('click', (e) => {
+        startCapture(stream);
+        isRecord = true;
+        downRecord.style.display = "block";
+        record.style.color = 'red';
+      })
+
+      downRecord.addEventListener('click', e => {
+        downRecordfunc();
+        isRecord = false;
+        record.style.color = 'white';
+        downRecord.style.display = "none";
+        if(!share){
+          record.style.display = "none";
+        }
+      })
 
     shareStream.getTracks()[0].onended = () => {
       if (Object.keys(peers).length !== 0) {
@@ -356,6 +381,13 @@ async function screenSharing() {
       fullSreenBtn.style.display = "none";
       openPintBtn.style.display = "none";
       myVid.style.objectFit = "cover";
+      if(isRecord) {
+        downRecordfunc();
+        isRecord = false;
+        record.style.color = 'white';
+        downRecord.style.display = "none";
+        record.style.display = "none";
+      }
     };
   });
 
@@ -390,3 +422,55 @@ socket.on("shareClose", (userId) => {
 
 
 
+/*****Start Take Attendees******/
+const convertToEx = (data) => {
+  data = data.map(a => {
+    return(
+      {"Name": a.first_name+" "+a.last_name}
+    )
+  });
+  /* this line is only needed if you are not adding a script tag reference */
+  if (typeof XLSX == "undefined") XLSX = require("xlsx");
+
+  /* make the worksheet */
+  var ws = XLSX.utils.json_to_sheet(data);
+
+  /* add to workbook */
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Attendees");
+
+  /* generate an XLSX file */
+  XLSX.writeFile(wb, "Attendees.xlsx");
+  
+};  
+/*****End Take Attendees******/
+
+document.querySelector('.exel').addEventListener('click', () => {
+  convertToEx(usersData);
+})
+
+
+
+/***************start screen record function*****************/
+function startCapture(stream) {
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start(1000);
+    mediaRecorder.ondataavailable = function (e) {
+        parts.push(e.data);
+    }
+}
+
+
+
+function downRecordfunc() {
+  mediaRecorder.stop();
+  const blob = new Blob(parts, {type: "video/mp4"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  document.body.appendChild(a);
+  a.style.display = "none";
+  a.href = url;
+  a.download = "video.mp4"
+  a.click();
+}
+/***************end screen record function*****************/
