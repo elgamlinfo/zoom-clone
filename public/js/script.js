@@ -381,6 +381,9 @@ async function screenSharing() {
       fullSreenBtn.style.display = "none";
       openPintBtn.style.display = "none";
       myVid.style.objectFit = "cover";
+      record.style.color = 'white';
+      downRecord.style.display = "none";
+      record.style.display = "none";
       if(isRecord) {
         downRecordfunc();
         isRecord = false;
